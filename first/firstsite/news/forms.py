@@ -4,6 +4,7 @@ import re
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
+from captcha.fields import CaptchaField
 
 
 class UserLoginForm(AuthenticationForm):
@@ -15,7 +16,7 @@ class UserRegisterForm(UserCreationForm):
 
     username = forms.CharField(label='Имя пользователя', widget=forms.TextInput(attrs={'class': 'form-control', }))
     password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form-control', }))
-    password2 = forms.CharField(label='Подтверждание пароля', widget=forms.PasswordInput(attrs={'class': 'form-control', }))
+    password2 = forms.CharField(label='Подтверждение пароля', widget=forms.PasswordInput(attrs={'class': 'form-control', }))
     email = forms.EmailField(label='E-mail', widget=forms.EmailInput(attrs={'class': 'form-control', }))
 
     class Meta:
@@ -38,3 +39,10 @@ class NewsForm(forms.ModelForm):
         if re.match(r'\d', title):
             raise ValidationError('Название не должно начинаться с цифры!')
         return title
+
+
+class ContactForm(forms.Form):
+    subject = forms.CharField(label='Тема', widget=forms.TextInput(attrs={'class': 'form-control', }))
+    content = forms.CharField(label='Текст', widget=forms.TextInput(attrs={'class': 'form-control', 'rows': 5}))
+    captcha = CaptchaField()
+

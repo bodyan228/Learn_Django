@@ -20,8 +20,10 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('captcha/', include('captcha.urls')),
     path('admin/', admin.site.urls),
-    path('', include('news.urls')),
+    path('', include('news.urls'))
 ]
 
 if settings.DEBUG:

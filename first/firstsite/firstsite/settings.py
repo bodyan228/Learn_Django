@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    'news.apps.NewsConfig',
+    'ckeditor',
+    'ckeditor_uploader',
+    'captcha',
+    'news.apps.NewsConfig'
 ]
 
 MIDDLEWARE = [
@@ -135,3 +138,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 465
+EMAIL_HOST_USER = 'vanya_bolshakov_02@mail.ru'
+EMAIL_HOST_PASSWORD = '89177378674mama'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': os.path.join(BASE_DIR, 'django_cache'),
+    }
+}
