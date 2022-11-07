@@ -1,12 +1,15 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404, HttpResponse
 from django.views.generic import ListView, DetailView, CreateView
-from .models import News, Category
-from .forms import NewsForm, UserRegisterForm, UserLoginForm, ContactForm
+from django.views.generic.edit import FormMixin
+from .models import News, Category, Comment
+from .forms import NewsForm, UserRegisterForm, UserLoginForm, ContactForm, CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.core.mail import send_mail
+from django.core.exceptions import ObjectDoesNotExist
+from django.urls import reverse_lazy
 
 
 def register(request):
@@ -96,9 +99,27 @@ class NewsByCategory(ListView):
                                    is_published=True).select_related('category')
 
 
-class ViewNews(DetailView):
+class ViewNews(FormMixin, DetailView):
     model = News
+    form_class = CommentForm
     context_object_name = 'news_item'
+
+    def get_success_url(self, **kwargs):
+        return reverse_lazy('view_news', kwargs={'pk': self.get_object().id})
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.post = self.get_object()
+        self.object.author = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 
 class CreateNews(LoginRequiredMixin, CreateView):
@@ -106,46 +127,3 @@ class CreateNews(LoginRequiredMixin, CreateView):
     template_name = 'news/add_news.html'
     # success_url = reverse_lazy('home')
     login_url = '/admin/'
-
-
-# def index(request):
-#     news = News.objects.all()
-#     context = {
-#         'news': news,
-#         'title': 'Список новостей',
-#     }
-#     return render(request, template_name='news/index.html', context=context)
-#
-#
-# def get_category(request, category_id):
-#     news = News.objects.filter(category_id=category_id)
-#     category = Category.objects.get(pk=category_id)
-#     return render(request, 'news/category.html', {'news': news,
-#                                                   'category': category})
-#
-#
-# def view_news(request, news_id):
-#     news_item = get_object_or_404(News, pk=news_id)
-#     return render(request, 'news/view_news.html', {'news_item': news_item})
-
-
-    # template_name = 'news/news_detail.html'
-    # pk_url_kwarg = 'news_id'
-
-
-# def add_news(request):
-#     if request.method == 'POST':
-#         form = NewsForm(request.POST)
-#         if form.is_valid():
-#             # news = News.objects.create(**form.cleaned_data)
-#             news = form.save()
-#             return redirect(news)
-#     else:
-#         form = NewsForm()
-#     return render(request, 'news/add_news.html', {'form': form})
-
-
-
-
-
-

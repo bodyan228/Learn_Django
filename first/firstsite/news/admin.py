@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import News, Category
+from .models import News, Category, Comment
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 
@@ -27,5 +27,12 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('title',)
 
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('author', 'post', 'created', 'active')
+    list_filter = ('active', 'created', 'updated')
+    search_fields = ('author', 'body')
+
+
+admin.site.register(Comment, CommentAdmin)
 admin.site.register(News, NewsAdmin)
 admin.site.register(Category, CategoryAdmin)
