@@ -12,7 +12,7 @@
     </div>
     <div class="card-body">
         <div class = "media">
-            {% if item.photo %}
+            {% if item.photo.url %}
                 <img src = "{{ item.photo.url}}" alt="" width="350" class="mr-3">
             {% else %}
                 <img src="https://picsum.photos/id/1060/350/300/?blur=2" alt ="" class="mr-3">

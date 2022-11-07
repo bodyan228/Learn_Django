@@ -1,5 +1,5 @@
 from django import forms
-from .models import News
+from .models import News, Comment
 import re
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -27,10 +27,11 @@ class UserRegisterForm(UserCreationForm):
 class NewsForm(forms.ModelForm):
     class Meta:
         model = News
-        fields = ['title', 'content', 'is_published', 'category']
+        fields = ['title', 'content', 'author', 'is_published', 'category']
         widgets = {
-            'title': forms. TextInput(attrs={'class': 'form-control', }),
+            'title': forms.TextInput(attrs={'class': 'form-control', }),
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 5}),
+            'author': forms.TextInput(attrs={'class': 'form-control', }),
             'category': forms.Select(attrs={'class': 'form-control', }),
         }
 
@@ -45,4 +46,15 @@ class ContactForm(forms.Form):
     subject = forms.CharField(label='Тема', widget=forms.TextInput(attrs={'class': 'form-control', }))
     content = forms.CharField(label='Текст', widget=forms.TextInput(attrs={'class': 'form-control', 'rows': 5}))
     captcha = CaptchaField()
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['body']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
 
