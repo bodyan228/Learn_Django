@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-import os.path
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -141,10 +141,11 @@ INTERNAL_IPS = [
     '127.0.0.1',
 ]
 
+
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'vanya_bolshakov_02@mail.ru'
-EMAIL_HOST_PASSWORD = '89177378674mama'
+EMAIL_HOST_USER = os.getenv("LOGIN")
+EMAIL_HOST_PASSWORD = os.getenv("PASS")
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 
@@ -153,7 +154,6 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_CONFIGS = {
     'default': {
         'skin': 'moono-lisa',
-        # 'skin': 'office2013',
         'toolbar_Basic': [
             ['Source', '-', 'Bold', 'Italic']
         ],
