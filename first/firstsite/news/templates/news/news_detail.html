@@ -36,14 +36,14 @@
         <h4> Чтобы оставить комментарий авторизирйтесь :)</h4>
     {% endif %}
     <hr>
-    <h4> Комментарии </h4>
+    <h4> Комментарии: </h4>
     <hr>
     {% for item in news_item.comments_news.all  %}
         <div class="media-block">
              <a class="media-left" href="#"><img class="img-circle img-sm" alt="Профиль пользователя" src="https://bootstraptema.ru/snippets/icons/2016/mia/1.png"></a>
              <div class="media-body">
                  <div class="mar-btm">
-                     <a href="#" class="btn-link text-semibold media-heading box-inline">{{ item.author }}</a>
+                     <a class="btn-link text-semibold media-heading box-inline">{{ item.author }}</a>
                      <p class="text-muted text-sm"><i class="fa fa-mobile fa-lg"></i> {{ item.created|date:"Y-m-d H:i" }}</p>
                  </div>
                  <p> {{ item.body }} </p>
@@ -52,7 +52,6 @@
                          <a class="btn btn-sm btn-default btn-hover-success" href="#"><i class="fa fa-thumbs-up"></i></a>
                          <a class="btn btn-sm btn-default btn-hover-danger" href="#"><i class="fa fa-thumbs-down"></i></a>
                      </div>
-                     <a class="btn btn-sm btn-default btn-hover-primary" href="#">Ответить</a>
                 </div>
              </div>
         </div>
