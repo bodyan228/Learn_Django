@@ -51,7 +51,7 @@ def contact(request):
             mail = send_mail(
                 form.cleaned_data['subject'],
                 form.cleaned_data['content'],
-                'vanya_bolshakov_02@mail.ru',
+                'bolshakov8917_12@mail.ru',
                 ['vanya_bolshakov_02@icloud.com'],
                 fail_silently=True
             )
